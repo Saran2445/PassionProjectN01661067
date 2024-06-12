@@ -31,6 +31,20 @@ namespace PassionProjectN01661067.Controllers
             }
             return ProductDtos;
         }
-       
+
+
+        [HttpGet]
+        [Route("api/ProductData/FindProduct/{id}")]
+        public ProductDto FindProduct(int id)
+        {
+            Product Item = db.Products.Find(id);
+
+            
+            ProductDto ProductDto = new ProductDto();
+            ProductDto.ProductId = Item.ProductId;
+            ProductDto.ProductName = Item.ProductName;
+            ProductDto.ProductPrice = Item.ProductPrice;
+            return ProductDto;
+        }
     }
 }

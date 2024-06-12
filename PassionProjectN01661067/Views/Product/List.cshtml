@@ -1,0 +1,12 @@
+﻿@model IEnumerable<PassionProjectN01661067.Models.ProductDto> 
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List Products</h2>
+
+@foreach(var Item in Model)
+ {
+    <div>@Item.ProductName (@Item.ProductPrice)</div>
+ }
+
