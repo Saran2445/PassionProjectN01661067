@@ -219,33 +219,55 @@ namespace PassionProjectN01661067.Controllers
             }
 
         }
-            // GET: Product/Delete/5
-            public ActionResult Delete(int id)
 
-            {
-                return View();
-            }
-
-            // POST: Product/Delete/5
-            [HttpPost]
-            public ActionResult Delete(int id, FormCollection collection)
-            {
+        /// <summary>
+        /// Displays a confirmation page for deleting a product.
+        /// </summary>
+        /// <param name="id">The ID of the product to be deleted.</param>
+        /// <returns>
+        /// The view containing the confirmation message for deleting the specified product.
+        /// </returns>
+        /// <example>
+        /// GET: Product/Delete/5
+        /// </example>
+        // GET: Product/Delete/5
+        public ActionResult DeleteConfirm(int id)
+        {
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            string url = "findproduct/" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            ProductDto selectedproduct = response.Content.ReadAsAsync<ProductDto>().Result;
+            return View(selectedproduct);
+        }
+        /// <summary>
+        /// Deletes a product.
+        /// </summary>
+        /// <param name="id">The ID of the product to be deleted.</param>
+        /// <returns>
+        /// Redirects to the list of products upon successful deletion, otherwise redirects to an error page.
+        /// </returns>
+        /// <example>
+        /// POST: product/Delete/5
+        /// </example>
+        // POST: Product/Delete/5
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            string url = "deleteproduct/" + id;
+            HttpContent content = new StringContent("");
+            content.Headers.ContentType.MediaType = "application/json";
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
 
-            try
+            if (response.IsSuccessStatusCode)
             {
-                    // TODO: Add delete logic here
-
-                    return RedirectToAction("Index");
-                }
-                catch
-                {
-                    return View();
-                }
-
-
-
+                return RedirectToAction("List");
+            }
+            else
+            {
+                return RedirectToAction("Error");
             }
         }
+    }
     }
 
