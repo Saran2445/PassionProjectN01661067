@@ -1,0 +1,8 @@
+{
+    "ProductId": 1,
+    "ProductName": "Maggi",
+    "ProductPrice": 267,
+    "StockQuantity": 545,
+    "NoOfTransactions": 800,
+    "SupplierId": 1
+}
