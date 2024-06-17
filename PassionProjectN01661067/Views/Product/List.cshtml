@@ -1,12 +1,16 @@
-﻿@model IEnumerable<PassionProjectN01661067.Models.ProductDto> 
+﻿@model IEnumerable<PassionProjectN01661067.Models.ProductDto>
 @{
     ViewBag.Title = "List";
 }
 
 <h2>List Products</h2>
 
-@foreach(var Item in Model)
- {
-    <div>@Item.ProductName (@Item.ProductPrice)</div>
- }
+@foreach (var Item in Model)
+{
+    <div><div>
+    <a href="/Product/Show/@Item.ProductId">
+        @Item.ProductName
+</div>(@Item.ProductPrice) (@Item.StockQuantity) (@Item.NoOfTransactions) (@Item.SupplierId) </div>
+
+}
 

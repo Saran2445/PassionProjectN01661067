@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create Product</h2>
+<form action="/Product/Create" method="POST">
+    <div>
+        <label>Product Name:</label> <input type="text" name="ProductName" />
+    </div>
+    <div>
+        <label>Product Price:</label> <input type="number" name="ProductPrice" />
+    </div>
+    <div>
+        <label>Stock Quantity:</label> <input type="number" name="StockQuantity" />
+    </div>
+    <div>
+        <label>No Of Transactions:</label> <input type="number" name="NoOfTransactions" />
+    </div>
+    <div>
+        <label>Supplier ID:</label> <input type="number" name="SupplierId" />
+    </div>
+
+    <div>
+        <input type="submit" value="Add Product" />
+    </div>
+</form>
+

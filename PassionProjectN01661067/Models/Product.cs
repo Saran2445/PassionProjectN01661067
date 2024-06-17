@@ -30,5 +30,11 @@ namespace PassionProjectN01661067.Models
         public string ProductName { get; set; }
 
         public decimal ProductPrice { get; set; }
+
+        public int StockQuantity { get; set; }
+
+        public int NoOfTransactions { get; set; }
+
+        public int SupplierId { get; set; }
     }
 }
