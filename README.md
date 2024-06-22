@@ -1,3 +1,5 @@
+#Inventory Management System
+
 This project is an Inventory Management System built using ASP.NET. It provides CRUD (Create, Read, Update, Delete) functionality and other features for managing products and suppliers within a business.
 
 Features
