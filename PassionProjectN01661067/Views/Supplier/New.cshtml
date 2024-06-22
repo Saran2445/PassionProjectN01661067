@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create Supplier</h2>
+<form action="/Supplier/Create" method="POST">
+    <div>
+        <label>Supplier Name:</label> <input type="text" name="SupplierName" />
+    </div>
+    <div>
+        <label>Contact Person:</label> <input type="text" name="ContactPerson" />
+    </div>
+    <div>
+        <label>Email Address:</label> <input type="text" name="EmailAddress" />
+    </div>
+    <div>
+        <label>Supplier Address:</label> <input type="text" name="SupplierAddress" />
+    </div>
+
+    <div>
+        <input type="submit" value="Add Supplier" />
+    </div>
+    <a href="/Supplier/List">Go back to List</a>
+</form>
+

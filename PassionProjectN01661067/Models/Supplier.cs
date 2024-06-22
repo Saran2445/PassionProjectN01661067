@@ -20,4 +20,15 @@ namespace PassionProjectN01661067.Models
         public string SupplierAddress { get; set;}  
  
     }
+    public class SupplierDto
+    {
+        public int SupplierId { get; set; }
+        public string SupplierName { get; set; }
+
+        public string ContactPerson { get; set; }
+
+        public string EmailAddress { get; set; }
+
+        public string SupplierAddress { get; set; }
+    }
 }

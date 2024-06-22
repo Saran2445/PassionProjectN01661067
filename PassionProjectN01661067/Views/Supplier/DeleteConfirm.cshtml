@@ -1,0 +1,23 @@
+﻿@model PassionProjectN01661067.Models.SupplierDto
+
+@{
+    ViewBag.Title = "DeleteConfirm";
+}
+
+
+
+<div>
+    <h2>Are you sure you want to delete this Supplier?</h2>
+    <div>
+        <div>
+            <h3>@Model.SupplierId</h3>
+            <div>
+                <div>
+                    <form action="/Supplier/Delete/@Model.SupplierId" method="POST" style="display:inline;">
+                        <input type="submit" value="Confirm Delete" />
+                    </form>
+                    <a href="/Supplier/List">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>

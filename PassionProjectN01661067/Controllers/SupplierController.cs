@@ -1,36 +1,36 @@
-﻿using System;
+﻿using PassionProjectN01661067.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
+using System.Net;
 using System.Web;
-using System.Web.Http.Description;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
-using PassionProjectN01661067.Models;
 
 namespace PassionProjectN01661067.Controllers
 {
-    public class ProductController : Controller
+    public class SupplierController : Controller
     {
+        // GET: Supplier
         private static readonly HttpClient client;
         private JavaScriptSerializer jss = new JavaScriptSerializer();
 
-        static ProductController()
+        static SupplierController()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44365/api/productdata/");
+            client.BaseAddress = new Uri("https://localhost:44365/api/supplierdata/");
         }
 
         /// <summary>
-        /// Displays a list of Products.
+        /// Displays a list of Suppliers.
         /// </summary>
         /// <returns>
-        /// The view containing the list of Products.
+        /// The view containing the list of Suppliers.
         /// </returns>
         /// <example>
-        /// GET: Product/List
+        /// GET: Supplier/List
         /// </example>
         /// 
 
@@ -40,39 +40,39 @@ namespace PassionProjectN01661067.Controllers
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
 
-            string url = "listproducts";
+            string url = "listsuppliers";
             HttpResponseMessage response = client.GetAsync(url).Result;
-            IEnumerable<ProductDto> Products = response.Content.ReadAsAsync<IEnumerable<ProductDto>>().Result;
-            return View(Products);
+            IEnumerable<SupplierDto> Suppliers = response.Content.ReadAsAsync<IEnumerable<SupplierDto>>().Result;
+            return View(Suppliers);
         }
 
-        // GET: Product/Show{id}System.AggregateException: 'One or more errors occurred.'
+        // GET: Supplier/Show{id}System.AggregateException: 'One or more errors occurred.'
         /// <summary>
-        /// Displays details of a specific product.
+        /// Displays details of a specific Supplier.
         /// </summary>
-        /// <param name="id">The ID of the product to be displayed.</param>
+        /// <param name="id">The ID of the Supplier to be displayed.</param>
         /// <returns>
-        /// The view containing details of the specified product.
+        /// The view containing details of the specified Supplier.
         /// </returns>
         /// <example>
-        /// GET: Product/Show/9
+        /// GET: Supplier/Show/9
         /// </example>
         public ActionResult Show(int id)
 
         {
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            string url = "findproduct/" + id;
+            string url = "findsupplier/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             Debug.WriteLine("The response code is ");
             Debug.WriteLine(response.StatusCode);
 
-            ProductDto selectedproduct = response.Content.ReadAsAsync<ProductDto>().Result;
-            Debug.WriteLine("product received : ");
-            Debug.WriteLine(selectedproduct.ProductName);
+            SupplierDto selectedsupplier = response.Content.ReadAsAsync<SupplierDto>().Result;
+            Debug.WriteLine("supplier received : ");
+        
 
 
-            return View(selectedproduct);
+            return View(selectedsupplier);
         }
 
         public ActionResult Error()
@@ -82,13 +82,13 @@ namespace PassionProjectN01661067.Controllers
         }
 
         /// <summary>
-        /// Displays a form for creating a new Product.
+        /// Displays a form for creating a new Supplier.
         /// </summary>
         /// <returns>
-        /// The view containing the form for creating a new Product.
+        /// The view containing the form for creating a new Supplier.
         /// </returns>
         /// <example>
-        /// GET: Product/New
+        /// GET: Supplier/New
         /// </example>
         public ActionResult New()
         {
@@ -96,28 +96,27 @@ namespace PassionProjectN01661067.Controllers
         }
 
         /// <summary>
-        /// Creates a new product.
+        /// Creates a new Supplier.
         /// </summary>
-        /// <param name="product">The product to be created.</param>
+        /// <param name="supplier">The Supplier to be created.</param>
         /// <returns>
-        /// Redirects to the list of products upon successful creation, otherwise redirects to an error page.
+        /// Redirects to the list of Suppliers upon successful creation, otherwise redirects to an error page.
         /// </returns>
         /// <example>
-        /// POST: Product/Create
+        /// POST: Supplier/Create
         /// </example>
 
         [HttpPost]
-        public ActionResult Create(Product product)
+        public ActionResult Create(Supplier supplier)
         {
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             Debug.WriteLine("the json payload is :");
-            //Debug.WriteLine(product.ProductName);
-            //objective: add a new Product into our system using the API
-            //curl -H "Content-Type:application/json" -d @product.json https://localhost:44324/api/productdata/addproduct
-            string url = "addproduct";
+           
+            //curl -H "Content-Type:application/json" -d @supplier.json https://localhost:44324/api/supplierdata/addsupplier
+            string url = "addsupplier";
 
 
-            string jsonpayload = jss.Serialize(product);
+            string jsonpayload = jss.Serialize(supplier);
 
             Debug.WriteLine(jsonpayload);
 
@@ -125,7 +124,7 @@ namespace PassionProjectN01661067.Controllers
             content.Headers.ContentType.MediaType = "application/json";
 
             HttpResponseMessage response = client.PostAsync(url, content).Result;
-            
+
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("List");
@@ -141,74 +140,70 @@ namespace PassionProjectN01661067.Controllers
         }
 
         /// <summary>
-        /// Displays a form for editing a product.
+        /// Displays a form for editing a Supplier.
         /// </summary>
-        /// <param name="id">The ID of the product to be edited.</param>
+        /// <param name="id">The ID of the Supplier to be edited.</param>
         /// <returns>
-        /// The view containing the form for editing the specified product.
+        /// The view containing the form for editing the specified Supplier.
         /// </returns>
         /// <example>
-        /// GET: product/Edit/5
+        /// GET: supplier/Edit/5
         /// </example>
         public ActionResult Edit(int id)
         {
 
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-            //objective: communicate with our product data api to retrieve one product
-            /*//curl https://localhost:44324/api/productdata/findproduct/{id}*/
+            //objective: communicate with our Supplier data api to retrieve one Supplier
+            /*//curl https://localhost:44324/api/supplierdata/findsupplier/{id}*/
 
-            string url = "findproduct/" + id;
+            string url = "findsupplier/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             //Debug.WriteLine("The response code is ");
             //Debug.WriteLine(response.StatusCode);
 
-            ProductDto selectedproduct = response.Content.ReadAsAsync<ProductDto>().Result;
-            //Debug.WriteLine("product received : ");
-            //Debug.WriteLine(selectedproduct.ProductName);
+            SupplierDto selectedsupplier = response.Content.ReadAsAsync<SupplierDto>().Result;
+         
 
-            return View(selectedproduct);
+            return View(selectedsupplier);
         }
 
         /// <summary>
-        /// Updates a product.
+        /// Updates a Supplier.
         /// </summary>
-        /// <param name="id">The ID of the product to be updated.</param>
-        /// <param name="product">The updated product data.</param>
+        /// <param name="id">The ID of the Supplier to be updated.</param>
+        /// <param name="supplier">The updated supplier data.</param>
         /// <returns>
-        /// Redirects to the details page of the updated product upon successful update, otherwise returns to the edit page.
+        /// Redirects to the details page of the updated Supplier upon successful update, otherwise returns to the edit page.
         /// </returns>
         /// <example>
-        /// POST: product/Update/5
+        /// POST: Supplier/Update/5
         /// </example>
 
-        // POST: Product/Update/5
+        // POST: Supplier/Update/5
         [HttpPost]
-        public ActionResult Update(int id, Product product)
+        public ActionResult Update(int id, Supplier supplier)
         {
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
             try
             {
-                Debug.WriteLine("The new product info is:");
-                /*Debug.WriteLine(product.ProductId);
-                Debug.WriteLine(product.ProductName);*/
-                /*Debug.WriteLine(product.ProductPrice);*/
+              
 
                 //serialize into JSON
                 //Send the request to the API
 
-                string url = "UpdateProduct/" + id;
+                string url = "UpdateSupplier/" + id;
 
 
-                string jsonpayload = jss.Serialize(product);
+                string jsonpayload = jss.Serialize(supplier);
                 Debug.WriteLine(jsonpayload);
 
                 HttpContent content = new StringContent(jsonpayload);
                 content.Headers.ContentType.MediaType = "application/json";
 
-                //POST: api/ProductData/UpdateProduct/{id}
+                //POST: api/SupplierData/UpdateSupplier/{id}
                 //Header : Content-Type: application/json
                 HttpResponseMessage response = client.PostAsync(url, content).Result;
 
@@ -225,40 +220,40 @@ namespace PassionProjectN01661067.Controllers
         }
 
         /// <summary>
-        /// Displays a confirmation page for deleting a product.
+        /// Displays a confirmation page for deleting a Supplier.
         /// </summary>
-        /// <param name="id">The ID of the product to be deleted.</param>
+        /// <param name="id">The ID of the Supplier to be deleted.</param>
         /// <returns>
-        /// The view containing the confirmation message for deleting the specified product.
+        /// The view containing the confirmation message for deleting the specified Supplier.
         /// </returns>
         /// <example>
-        /// GET: Product/Delete/5
+        /// GET: Supplier/Delete/5
         /// </example>
-        // GET: Product/Delete/5
+        // GET: Supplier/Delete/5
         public ActionResult DeleteConfirm(int id)
         {
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            string url = "findproduct/" + id;
+            string url = "findsupplier/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
-            ProductDto selectedproduct = response.Content.ReadAsAsync<ProductDto>().Result;
-            return View(selectedproduct);
+            SupplierDto selectedsupplier = response.Content.ReadAsAsync<SupplierDto>().Result;
+            return View(selectedsupplier);
         }
         /// <summary>
-        /// Deletes a product.
+        /// Deletes a Supplier.
         /// </summary>
-        /// <param name="id">The ID of the product to be deleted.</param>
+        /// <param name="id">The ID of the Supplier to be deleted.</param>
         /// <returns>
-        /// Redirects to the list of products upon successful deletion, otherwise redirects to an error page.
+        /// Redirects to the list of Suppliers upon successful deletion, otherwise redirects to an error page.
         /// </returns>
         /// <example>
-        /// POST: product/Delete/5
+        /// POST: supplier/Delete/5
         /// </example>
-        // POST: Product/Delete/5
+        // POST: Supplier/Delete/5
         [HttpPost]
         public ActionResult Delete(int id)
         {
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            string url = "deleteproduct/" + id;
+            string url = "deletesupplier/" + id;
             HttpContent content = new StringContent("");
             content.Headers.ContentType.MediaType = "application/json";
             HttpResponseMessage response = client.PostAsync(url, content).Result;
@@ -273,5 +268,6 @@ namespace PassionProjectN01661067.Controllers
             }
         }
     }
-    }
+}
+
 

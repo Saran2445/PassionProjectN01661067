@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PassionProjectN01661067.Models.SupplierDto>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List Suppliers</h2>
+
+
+<div>
+    <h1>Inventory System</h1>
+    <nav>
+        <a href="/Home">Home</a>
+        <a href="/Product/List">Products</a>
+        <a href="/Supplier/List">Suppliers</a>
+    </nav>
+    <h2>Supplier List</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Supplier ID</th>
+                <th>Name</th>
+                <th>ContactPerson</th>
+                <th>EmailAdress</th>
+                <th>SupplierAdress</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var supplier in Model)
+            {
+                <tr>
+                    <td>@supplier.SupplierId</td>
+                    <td>@supplier.SupplierName</td>
+                    <td>@supplier.ContactPerson</td>
+                    <td>@supplier.EmailAddress</td>
+                    <td>@supplier.SupplierAddress</td>
+                    <td>
+                        <a href="/Supplier/Show/@supplier.SupplierId">Details</a>
+                        <a href="/Supplier/Edit/@supplier.SupplierId">Edit</a>
+                        <a href="/Supplier/DeleteConfirm/@supplier.SupplierId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a href="/Supplier/New">Add New Supplier</a>
+</div>
+

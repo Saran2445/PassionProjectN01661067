@@ -186,6 +186,8 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductDataController.cs" />
+    <Compile Include="Controllers\SupplierController.cs" />
+    <Compile Include="Controllers\SupplierDataController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -216,6 +218,10 @@
     <Compile Include="Migrations\202406082325281_fk4.cs" />
     <Compile Include="Migrations\202406082325281_fk4.designer.cs">
       <DependentUpon>202406082325281_fk4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202406210811134_supplierinfo.cs" />
+    <Compile Include="Migrations\202406210811134_supplierinfo.designer.cs">
+      <DependentUpon>202406210811134_supplierinfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -303,6 +309,12 @@
     <Content Include="Views\Product\Error.cshtml" />
     <Content Include="Views\Product\Edit.cshtml" />
     <Content Include="Views\Product\DeleteConfirm.cshtml" />
+    <Content Include="Views\Supplier\DeleteConfirm.cshtml" />
+    <Content Include="Views\Supplier\Edit.cshtml" />
+    <Content Include="Views\Supplier\Error.cshtml" />
+    <Content Include="Views\Supplier\List.cshtml" />
+    <Content Include="Views\Supplier\New.cshtml" />
+    <Content Include="Views\Supplier\Show.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -356,6 +368,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202406082325281_fk4.resx">
       <DependentUpon>202406082325281_fk4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202406210811134_supplierinfo.resx">
+      <DependentUpon>202406210811134_supplierinfo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
