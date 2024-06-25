@@ -14,7 +14,8 @@ namespace PassionProjectN01661067.Controllers
 
     public class ProductDataController : ApiController
     {
-        //GET: /api/ProductData/ListProducts
+        //GET: /api/Produ
+        //ctData/ListProducts
         private ApplicationDbContext db = new ApplicationDbContext();
 
         /// <summary>

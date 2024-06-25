@@ -19,7 +19,13 @@ namespace PassionProjectN01661067.Controllers
 
         static ProductController()
         {
-            client = new HttpClient();
+            HttpClientHandler handler = new HttpClientHandler()
+            {
+                AllowAutoRedirect = false,
+                //cookies are manually set in RequestHeader
+                UseCookies = false
+            };
+            client = new HttpClient(handler);
             client.BaseAddress = new Uri("https://localhost:44365/api/productdata/");
         }
 
@@ -80,7 +86,29 @@ namespace PassionProjectN01661067.Controllers
 
             return View();
         }
+        /// <summary>
+        /// Grabs the authentication cookie sent to this controller.
+        /// For proper WebAPI authentication, you can send a post request with login credentials to the WebAPI and log the access token from the response. The controller already knows this token, so we're just passing it up the chain.
+        /// </summary>
+        private void GetApplicationCookie()
+        {
+            string token = "";
+            //HTTP client is set up to be reused, otherwise it will exhaust server resources.
+            //This is a bit dangerous because a previously authenticated cookie could be cached for
+            //a follow-up request from someone else. Reset cookies in HTTP client before grabbing a new one.
+            client.DefaultRequestHeaders.Remove("Cookie");
+            if (!User.Identity.IsAuthenticated) return;
 
+            HttpCookie cookie = System.Web.HttpContext.Current.Request.Cookies.Get(".AspNet.ApplicationCookie");
+            if (cookie != null) token = cookie.Value;
+
+            //collect token as it is submitted to the controller
+            //use it to pass along to the WebAPI.
+            Debug.WriteLine("Token Submitted is : " + token);
+            if (token != "") client.DefaultRequestHeaders.Add("Cookie", ".AspNet.ApplicationCookie=" + token);
+
+            return;
+        }
         /// <summary>
         /// Displays a form for creating a new Product.
         /// </summary>
@@ -92,6 +120,7 @@ namespace PassionProjectN01661067.Controllers
         /// </example>
         public ActionResult New()
         {
+            GetApplicationCookie();
             return View();
         }
 
@@ -109,6 +138,7 @@ namespace PassionProjectN01661067.Controllers
         [HttpPost]
         public ActionResult Create(Product product)
         {
+            GetApplicationCookie();
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             Debug.WriteLine("the json payload is :");
             //Debug.WriteLine(product.ProductName);
@@ -152,6 +182,7 @@ namespace PassionProjectN01661067.Controllers
         /// </example>
         public ActionResult Edit(int id)
         {
+            GetApplicationCookie();
 
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
@@ -187,6 +218,7 @@ namespace PassionProjectN01661067.Controllers
         [HttpPost]
         public ActionResult Update(int id, Product product)
         {
+            GetApplicationCookie();
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
             try
@@ -237,6 +269,7 @@ namespace PassionProjectN01661067.Controllers
         // GET: Product/Delete/5
         public ActionResult DeleteConfirm(int id)
         {
+            GetApplicationCookie();
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             string url = "findproduct/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
@@ -257,6 +290,7 @@ namespace PassionProjectN01661067.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
+            GetApplicationCookie();
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             string url = "deleteproduct/" + id;
             HttpContent content = new StringContent("");
